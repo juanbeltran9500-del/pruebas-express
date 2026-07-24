@@ -1,11 +1,12 @@
-const express = require('express'); 
-const app = express();  
-const port = 3000; 
+import express from 'express'; // Método ES Modules
 
-app.get("/", (_, res) => { 
-    res.send(’Aprendiendo express,ficha 3407181’); 
-}); 
+const app = express();
+const port = 3000;
 
-app.listen(port, () => { 
-    console.log( `Servidor en funcionamiento en el puerto: `); 
-}); 
+app.get('/', (req, res) => {
+res.send('Aprendiendo express, ficha 3407181');
+});
+
+app.listen(port, () => {
+console.log('Servidor en funcionamiento en el puerto: ' + port);
+});
