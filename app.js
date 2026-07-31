@@ -18,7 +18,20 @@ app.get("ruta2",(req,res)=>{
         "aprendiz"})
 
     })
+
+    app.get("/ruta2/:aprendiz", (req, res) =>{
+    const dato_aprendiz = req.params.aprendiz
+    const otro_dato = req.params.otro_dato
+    res.json ({"nombre": dato_aprendiz, "otro": otro_dato})
+})
     
+app.get("/ruta4", (req,res)=>{
+    const orden =req.query.orden || "sin ordenar"
+    res.send(`<h1>Listado Aprendices</h1>
+        <p>El listado esta en orden ${orden}</p>
+        <p>pagina:${pagina}>/p>
+        `)
+        })
     
 app.listen(port,function(){
     console.log(`Servidor: http://localhost:${port}`)
