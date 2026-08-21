@@ -1,11 +1,10 @@
-const express = require('express'); 
-const app = express();  
-const port = 3000; 
+const express = require("express")
+const app = express()
 
-app.get("/", (_, res) => { 
-    res.send(’Aprendiendo express,ficha 3407181’); 
-}); 
+app.get("/", (_, res) => {
+  res.send(`API Rest`, );
+});
 
-app.listen(port, () => { 
-    console.log( `Servidor en funcionamiento en el puerto: `); 
-}); 
+app.listen(3000, () => {
+  console.log(`Servidor en funcionamiento en el puerto: http://localhost:3000`);
+});
