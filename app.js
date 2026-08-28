@@ -20,6 +20,9 @@ app.get("/api/aprendiz", (req, res)=>{
         res.json(listaAprendices)
     })
 })
+     app.post("/api/aprendices",function (req, res) {
+        res.json({mensaje: "trabajando en el endpoint"})
+     })        
 
 app.listen(puerto, function () {
      console.log( `SERVIDOR http://localhost:${puerto}`) 
