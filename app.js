@@ -1,40 +1,75 @@
-import express from 'express'; // Método ES Modules
-//leer el archivo .envi
+import  express  from "express";
+
+//leer el archivo .env
 import {configDotenv} from "dotenv"
 configDotenv()
+
 const app = express();
-const port =process.env.PUERTO|| 5050;
-app.get('/', (req, res) => {
-res.send('Aprendiendo express, ya me quiero ir a la houseee,ADSO EN EL SENA 31 de julio');
-});      
-//otro endpoint
-app.get("/otra ruta", (req,res)=>{
-    //uswando template string
-    res.send(`<h1>otra ejemplo de ruta</h1>h2>End point con res.send</h2>`)
+const port = process.env.PUERTO || 5050;
+
+app.use(express.json())
+
+app.get("/", (_, res) => {
+    res.send('Aprendiendo Express,ficha 3407181, ADSO EN EL SENA 31 de julio');
+});
+
+app.get("/ruta2", (req, res)=>{
+    //usando template string
+    res.json({"nombre":"Santiago", "apellido":"Martinez", "ficha":"3407181", "cargo":"aprendiz"})
 })
 
-app.get("ruta2",(req,res)=>{
-    res.json({"nombre": "juan", "apellido": "beltran","cargo":
-        "aprendiz"})
-
-    })
-
-    app.get("/ruta2/:aprendiz", (req, res) =>{
+app.get("/ruta3/:aprendiz/:otro_dato", (req, res) =>{
     const dato_aprendiz = req.params.aprendiz
-    const otro_dato = req.params.otro_dato
+    const otro_dato = req.params.aprendiz
     res.json ({"nombre": dato_aprendiz, "otro": otro_dato})
 })
-    
-app.get("/ruta4", (req,res)=>{
-    const orden =req.query.orden || "sin ordenar"
-    res.send(`<h1>Listado Aprendices</h1>
-        <p>El listado esta en orden ${orden}</p>
-        <p>pagina:${pagina}>/p>
+
+app.get("/ruta4", (req, res) =>{
+    const orden = req.query.orden || "sin ordenar"
+    const pagina = req.query.pagina
+    res.send(`<h1>Listado de aprendices</h1>
+        <p>el listado en orden ${orden}</p>
+        <p>pagina: ${pagina}</p>
         `)
-        })
-    
-app.listen(port,function(){
-    console.log(`Servidor: http://localhost:${port}`)
 })
 
+app.post("/ruta2", (req, res) =>{
+    const todosDatos = req.body
+    const name = req.body.nombre
+    const lastname = req.body.cargo
+    res.status(201).json({Datos: todosDatos,nombre:name,
+        cargo: lastname})
+    })
 
+    app.post("/login", (req, res) => {
+
+    const usuario = req.body.usuario;
+    const contraseña = req.body.contraseña;
+
+    if (!usuario || !contraseña) {
+        return res.status(400).json({
+            mensaje: "Faltan datos"
+        });
+    }
+
+    if (usuario === "admin") {
+        return res.status(200).json({
+            mensaje: "Bienvenido administrador"
+        });
+    }
+
+    if (usuario === "user") {
+        return res.status(200).json({
+            mensaje: "Bienvenido usuario"
+        });
+    }
+
+    return res.status(403).json({
+        mensaje: "Usuario no autorizado"
+    });
+
+});
+
+app.listen(port, function(){
+console.log( `SERVIDOR: http://localhost:${port}`);
+});
