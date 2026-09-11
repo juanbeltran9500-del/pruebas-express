@@ -1,17 +1,24 @@
 [
-    {
-        "dn1":1,
-        "nombre": "ana",
-        "apellido": "martinez",
-        "correo": "ana@gmail.com",
-        "imagen": "foto.jpg"
-    },
-
-    {
-       "dn1":2,
-       "nombre":"juana",
-       "apellido":"beltran",
-       "correo":"juana@gmail.com",
-       "imagen":"foto.jpg"
-       }
+  {
+    "dn1": 1,
+    "nombre": "esteban",
+    "apellido": "reyes",
+    "correo": "esteban@gmail.com",
+    "imagen": "foto.jpg"
+  },
+  {
+    "dn1": 2,
+    "nombre": "juan",
+    "apellido": "beltran",
+    "correo": "juan@gmail.com",
+    "imagen": "foto.jpg"
+  },
+  {
+    "dni": 2,
+    "nombre": "juan",
+    "apellido": "beltran",
+    "correo": "juan@gmail.com",
+    "imagen": "foto.jpg"
+  },
+  null
 ]

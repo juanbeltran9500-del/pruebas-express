@@ -1,5 +1,5 @@
 {
-  "name": "intro-express-js-laura_gutierrez",
+  "name": "intro-express-js-juan_beltran",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -14,6 +14,7 @@
   "type": "commonjs",
   "dependencies": {
     "dotenv": "^17.4.2",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "multer": "^2.3.0"
   }
 }
