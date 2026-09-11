@@ -20,5 +20,25 @@
     "correo": "juan@gmail.com",
     "imagen": "foto.jpg"
   },
-  null
+  null,
+  {
+    "nombre": "carlos",
+    "edad": "33",
+    "apellido": "beltran",
+    "imagen": "/misimagenes/000e308581f16949ca9906ef7bc94393"
+  },
+  {
+    "nombre": "Juan",
+    "correo": "juan@gmail.com",
+    "imagen": "sin imagen"
+  },
+  {
+    "mensaje": "Usuario creado correctamente",
+    "usuario": {
+      "id": 1757600000000,
+      "nombre": "Juan",
+      "correo": "juan@gmail.com"
+    },
+    "imagen": "sin imagen"
+  }
 ]
