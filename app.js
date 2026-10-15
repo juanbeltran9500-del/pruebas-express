@@ -1,22 +1,19 @@
-juan beltran <sm.marinez.ms18@gmail.com>
-8:09 a.m. (hace 0 minutos)
-para Edwar, mí
-
 const express = require("express");
 const app = express();
 require("dotenv").config();
-const puerto = process.env.PORT || 3000;
+const puerto = process.env.PORT || 3030;
 
 const sistemaArchivo = require("fs");
 const ruta = require("path");
 const rutaArchivoJson = ruta.join(__dirname, "datos.json");
-//importacion de libreria
+//IMPORTACION LIBRERIA PARA SUBIR ARCHIVOS 
 const multer = require("multer");
-//importacion de middlewarepersonales
-const registroMiddleware = require("./middleware/registroMiddleware")
-const manejadorErrores = require("./middleware/manejadorErrores")
-const autenticarMiddleware = require("./middleware/autenticarMiddleware")
+const jwt = require("jsonwebtoken");  
+//Importar middleware personalizado
+const registroMiddleware = require("./middleware/registroMiddleware");
 
+const manejadorErrores = require("./middleware/ManejadorErrores");
+const autenticarMiddleware = require("./middleware/autenticarMiddleware");
 
 // Importar las funciones de validación
 const {
@@ -24,7 +21,6 @@ const {
   validarCorreo,
   generarId
 } = require("./utilidades/validaciones");
-const { userInfo } = require("os")
 
 // Middlewares globales (van antes de las rutas)
 app.use(express.json());
@@ -33,11 +29,11 @@ app.use(express.urlencoded({ extended: true }));
 // Tu middleware de log/tiempo
 app.use((req, res, next) => {
   console.log(`tiempo milisegundos: ${Date.now()}`);
-  console.log(`fecha: ${new Date().toLocaleString()}`);
+  console.log(`fecha: ${new Date().toISOString()}`);
   next();
 });
-app.use(registroMiddleware);
 
+app.use(registroMiddleware);
 // Configurar el almacenamiento de imágenes
 const almacenamiento = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -120,32 +116,67 @@ app.delete("/api/aprendices/:id", (req, res) => {
   res.status(200).json({ mensaje: "endpoint en proceso de construcción de eliminar" });
 });
 
-//provocar error
-app.get("/error", (req, res, next) =>{
-  next(new Error("Error intencional para probar."))
+//provoca error urilizo next
+app.get("/error", (req, res,next) => {
+  next(new Error("Error intecional para probar."))
 })
 
 //ruta protegida
-app.get("/rutaprotegida", autenticarMiddleware,(req, res) =>{
-  res.json({mensaje: "Acceso concedido a la ruta protegida", usuario: req.usuario});
-});
+app.post("/rutaprotegida", autenticarMiddleware, (req, res) => {
+  res.json({ mensaje: "Esta ruta  ruta protegida"})
+})
 
-//uso del middleware de errores
+//endpoint iniciar sesion generar token
+app.post("/iniciar-sesion", (req, res) => {
+  //capturar usuario y clave
+  const { usuario, clave } = req.body;
+  //simular usuario base de datos 
+  const usuarioBD = {"user": "angela","clave": "2222"}
+    //verificar credenciales
+    if(usuario !== usuarioBD.usuario || clave !== usuarioBD.clave){
+      res.json({mensaje: "Credenciales incorrectas"})
+    }
+  
+  //generar token 
+  const token = jwt.sign(
+    {usuario: usuario},
+    process.env.JWT_SECRETO, 
+    {expiresIn: "2h"}
+  )
+  res.json({token: token})
+})
+  //uso del middleware de manejo de errores
 app.use(manejadorErrores);
-
-app.post("/api/login", (req, res) =>{
-  const { usuario, clave} = req.body
-  const usuariodb ={"user": "juan", clave: "1234"}
-
-  if(usuario === usuariodb.user && clave === usuariodb.clave){
-   res.json({mensaje:"credenciales incorrectas"})
-  }
-
-
-const token = JsonWebToken.sign({usuario}, process.env.JWT_SECRETO, {expiresIn: "2h"})
-)
-res.json({mensaje: "Login exitoso", token})
-}) 
+//el servidor en funcionamiento , la variable de entorno .env
 app.listen(puerto, () => {
   console.log(`Servidor en funcionamiento en el puerto: http://localhost:${puerto}`);
 });
+
+
+const express = require("express");
+const pool = require("./database/db"); // Importa la conexión que creamos
+
+const miApp = express();
+
+miApp.use(express.json());
+miApp.use(express.urlencoded({ extended: true }));
+
+// Ruta de prueba para verificar la base de datos
+miApp.get("/test-db", async (req, res) => {
+  try {
+    const resultado = await pool.query('SELECT NOW()');
+    res.json({
+      mensaje: "Conexión a PostgreSQL exitosa",
+      fecha_servidor: resultado.rows[0].now
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error en la base de datos" });
+  }
+});
+
+miApp.get("/", (req, res) => {
+  res.send("MI API rest ficha 3407181.");
+});
+
+module.exports = miApp;

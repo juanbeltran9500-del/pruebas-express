@@ -1,0 +1,20 @@
+const jwt = require("jsonwebtoken");
+//función para generar -verificar
+const autenticarMiddleware = (req, res, next) => {
+    //capturar el token enviado por el usuario 
+    const token = req.header("autenticar")?.split("")[1]
+    if(!token){
+        res.status(401).json({mensaje: "Acceso denegado. Token no proporcionado"})
+
+}
+//verificar
+jwt.verify(token, process.env.JWT_SECRETO, (error, usuario) => {
+    if(error){
+        res.status(403).json({mensaje: "Token inválido."})
+    }
+
+    req.usuario = usuario
+})
+}
+
+module.exports = autenticarMiddleware
